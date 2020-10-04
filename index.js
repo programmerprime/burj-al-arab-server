@@ -30,6 +30,10 @@ const MongoClient = require("mongodb").MongoClient;
 const uri =
   `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.bn8ta.gcp.mongodb.net:27017,cluster0-shard-00-01.bn8ta.gcp.mongodb.net:27017,cluster0-shard-00-02.bn8ta.gcp.mongodb.net:27017/${process.env.DB_NAME}?ssl=true&replicaSet=atlas-wx14y2-shard-0&authSource=admin&retryWrites=true&w=majority`;
 
+  app.get('/', (req, res) => {
+    res.send('hello Prime');
+  })
+
 MongoClient.connect(uri, function (err, client) {
   const bookings = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION}`);
 
