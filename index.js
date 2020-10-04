@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require('dotenv').config()
 
+const port = 5000;
+
 
 
 app = express();
@@ -26,10 +28,10 @@ app.get("/", (req, res) => {
 const MongoClient = require("mongodb").MongoClient;
 
 const uri =
-  `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.bn8ta.gcp.mongodb.net:27017,cluster0-shard-00-01.bn8ta.gcp.mongodb.net:27017,cluster0-shard-00-02.bn8ta.gcp.mongodb.net:27017/burjAlArab?ssl=true&replicaSet=atlas-wx14y2-shard-0&authSource=admin&retryWrites=true&w=majority`;
+  `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.bn8ta.gcp.mongodb.net:27017,cluster0-shard-00-01.bn8ta.gcp.mongodb.net:27017,cluster0-shard-00-02.bn8ta.gcp.mongodb.net:27017/${process.env.DB_NAME}?ssl=true&replicaSet=atlas-wx14y2-shard-0&authSource=admin&retryWrites=true&w=majority`;
 
 MongoClient.connect(uri, function (err, client) {
-  const bookings = client.db("burjAlArab").collection("bookings");
+  const bookings = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION}`);
 
   app.get("/bookings", (req, res) => {
     const bearer = req.headers.authorization;
@@ -74,4 +76,4 @@ MongoClient.connect(uri, function (err, client) {
   console.log("db connected");
 });
 
-app.listen(3100, () => console.log("app running on port 3100"));
+app.listen(process.env.PORT || port);
